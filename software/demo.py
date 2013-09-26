@@ -16,7 +16,7 @@
 
 import math
 import time
-from LedStrip_WS2801 import LedStrip_WS2801
+from LedStrip_WS2801 import *
 
 def mySin(a, min, max):
 	return min + ((max-min)/2.)*(math.sin(a)+1)
@@ -26,7 +26,7 @@ def rainbow(a):
 	return [int(mySin(a, 0, intense)), int(mySin(a+math.pi/2, 0, intense)), int(mySin(a + math.pi, 0, intense))]	
 
 def fillAll(ledStrip, color, sleep):
-	for i in range(0, ledStrip.nLeds):
+	for i in range(0, 25):
 		ledStrip.setPixel(i, color)
 		ledStrip.update()
 		time.sleep(sleep)
@@ -34,9 +34,9 @@ def fillAll(ledStrip, color, sleep):
 def rainbowAll(ledStrip, times, sleep):
 	for t in range(0, times):
 		for i in range(0, ledStrip.nLeds):
-			ledStrip.setPixel(i, rainbow((8*math.pi*(i+t))/ledStrip.nLeds))
+			ledStrip.setPixel(i, rainbow((1.1*math.pi*(i+t))/ledStrip.nLeds))
 		ledStrip.update()
-		time.sleep(sleep)
+		if (sleep != 0): time.sleep(sleep)
 
 def antialisedPoint(ledStrip, color, step, dscale, sleep = 0): 
 	rr = color[0]
@@ -49,18 +49,28 @@ def antialisedPoint(ledStrip, color, step, dscale, sleep = 0):
 			if delta < 0: delta = 0
 			ledStrip.setPixel(i, [int(delta*rr), int(delta*gg), int(delta*bb)])
 		ledStrip.update()
-		time.sleep(sleep)
+		#	time.sleep(sleep)
+
+nrOfleds = 160 
+delayTime = 0.01
 
 
-ledStrip = LedStrip_WS2801("/dev/spidev0.0", 160)
+#oldStrip = LedStrip_WS2801_FileBased("/dev/spidev0.0", nrOfleds)
+#fillAll(oldStrip, [255, 0, 0], delayTime)
+#oldStrip.close()
 
-fillAll(ledStrip, [255, 0, 0], 0.01)
-fillAll(ledStrip, [0, 255, 0], 0.01)
-fillAll(ledStrip, [0, 0, 255], 0.01)
 
-antialisedPoint(ledStrip, [255, 0, 0], 0.5, 0.3)
-antialisedPoint(ledStrip, [0, 255, 0], 0.5, 0.3)
-antialisedPoint(ledStrip, [0, 0, 255], 0.5, 0.3)
+ledStrip = LedStrip_WS2801(nrOfleds)
 
-rainbowAll(ledStrip, 500, 0.01)
+
+while 1:
+	fillAll(ledStrip, [0, 255, 0], delayTime)
+	rainbowAll(ledStrip, 200, 0.01)
+	fillAll(ledStrip, [255, 0, 0], 0.01)
+	fillAll(ledStrip, [0, 255, 0], 0.01)
+	fillAll(ledStrip, [0, 0, 255], 0.01)
+	antialisedPoint(ledStrip, [255, 0, 0], 0.5, 0.3)
+	antialisedPoint(ledStrip, [0, 255, 0], 0.5, 0.3)
+	antialisedPoint(ledStrip, [0, 0, 255], 0.5, 0.3)
+	rainbowAll(ledStrip, 500, 0.01)
 

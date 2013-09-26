@@ -1,0 +1,34 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:		hackerspaceshop_ws2801	
+# Required-Start:	$remote_fs $syslog
+# Required-Stop:	$remote_fs $syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:		
+# Short-Description:	WS2801 Support	
+### END INIT INFO
+
+set -e
+
+
+umask 022
+
+
+. /lib/lsb/init-functions
+
+
+export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting WS2801 support" "YAY \o/" || true
+	python /home/pi/hackerspaceshop/ws2801_bridge/demo.py &
+	;;
+
+  *)
+	log_action_msg "Usage: /etc/init.d/hackerspaceshop_ws2801 {start}" || true
+	exit 1
+esac
+
+exit 0
