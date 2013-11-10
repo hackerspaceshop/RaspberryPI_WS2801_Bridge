@@ -15,7 +15,9 @@
 # http://www.hackerspaceshop.com/ledstrips/raspberrypi-ws2801.html
 
 import math
+import sys
 import time
+
 from LedStrip_WS2801 import LedStrip_WS2801
 
 
@@ -60,7 +62,10 @@ def antialisedPoint(ledStrip, color, step, dscale, sleep=0):
 
 
 if __name__ == '__main__':
-    nrOfleds = 160
+    if len(sys.argv) == 1:
+        nrOfleds = 160
+    else:
+        nrOfleds = int(sys.argv[1])
     delayTime = 0.01
 
     # oldStrip = LedStrip_WS2801_FileBased(nrOfleds, "/dev/spidev0.0")
