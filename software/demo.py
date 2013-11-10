@@ -31,7 +31,7 @@ def rainbow(a):
 
 
 def fillAll(ledStrip, color, sleep):
-    for i in range(0, 25):
+    for i in range(0, ledStrip.nLeds):
         ledStrip.setPixel(i, color)
         ledStrip.update()
         time.sleep(sleep)
