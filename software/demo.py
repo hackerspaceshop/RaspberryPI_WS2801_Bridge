@@ -58,25 +58,24 @@ def antialisedPoint(ledStrip, color, step, dscale, sleep=0):
         ledStrip.update()
         #   time.sleep(sleep)
 
-nrOfleds = 160
-delayTime = 0.01
 
+if __name__ == '__main__':
+    nrOfleds = 160
+    delayTime = 0.01
 
-# oldStrip = LedStrip_WS2801_FileBased(nrOfleds, "/dev/spidev0.0")
-# fillAll(oldStrip, [255, 0, 0], delayTime)
-# oldStrip.close()
+    # oldStrip = LedStrip_WS2801_FileBased(nrOfleds, "/dev/spidev0.0")
+    # fillAll(oldStrip, [255, 0, 0], delayTime)
+    # oldStrip.close()
 
+    ledStrip = LedStrip_WS2801(nrOfleds)
 
-ledStrip = LedStrip_WS2801(nrOfleds)
-
-
-while 1:
-    fillAll(ledStrip, [0, 255, 0], delayTime)
-    rainbowAll(ledStrip, 200, 0.01)
-    fillAll(ledStrip, [255, 0, 0], 0.01)
-    fillAll(ledStrip, [0, 255, 0], 0.01)
-    fillAll(ledStrip, [0, 0, 255], 0.01)
-    antialisedPoint(ledStrip, [255, 0, 0], 0.5, 0.3)
-    antialisedPoint(ledStrip, [0, 255, 0], 0.5, 0.3)
-    antialisedPoint(ledStrip, [0, 0, 255], 0.5, 0.3)
-    rainbowAll(ledStrip, 500, 0.01)
+    while 1:
+        fillAll(ledStrip, [0, 255, 0], delayTime)
+        rainbowAll(ledStrip, 200, 0.01)
+        fillAll(ledStrip, [255, 0, 0], 0.01)
+        fillAll(ledStrip, [0, 255, 0], 0.01)
+        fillAll(ledStrip, [0, 0, 255], 0.01)
+        antialisedPoint(ledStrip, [255, 0, 0], 0.5, 0.3)
+        antialisedPoint(ledStrip, [0, 255, 0], 0.5, 0.3)
+        antialisedPoint(ledStrip, [0, 0, 255], 0.5, 0.3)
+        rainbowAll(ledStrip, 500, 0.01)
