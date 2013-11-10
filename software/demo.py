@@ -62,7 +62,7 @@ nrOfleds = 160
 delayTime = 0.01
 
 
-# oldStrip = LedStrip_WS2801_FileBased("/dev/spidev0.0", nrOfleds)
+# oldStrip = LedStrip_WS2801_FileBased(nrOfleds, "/dev/spidev0.0")
 # fillAll(oldStrip, [255, 0, 0], delayTime)
 # oldStrip.close()
 

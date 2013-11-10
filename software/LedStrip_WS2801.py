@@ -51,7 +51,7 @@ class LedStrip_WS2801(object):
 
 # filebased acces to SPI
 class LedStrip_WS2801_FileBased(LedStrip_WS2801):
-    def __init__(self, spiDevice, nLeds, nBuffers=1):
+    def __init__(self, nLeds, spiDevice, nBuffers=1):
         self.spi = open(spiDevice, "w")
         self.nLeds = nLeds
         self.nBuffers = nBuffers
