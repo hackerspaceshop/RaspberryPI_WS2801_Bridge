@@ -18,7 +18,7 @@ import spidev
 
 
 # access to SPI with python spidev library
-class LedStrip_WS2801:
+class LedStrip_WS2801(object):
     # spiDevice has format [
     def __init__(self, nLeds, nBuffers=1):
         self.spi = spidev.SpiDev()  # create spi object
@@ -50,9 +50,9 @@ class LedStrip_WS2801:
 
 
 # filebased acces to SPI
-class LedStrip_WS2801_FileBased:
+class LedStrip_WS2801_FileBased(LedStrip_WS2801):
     def __init__(self, spiDevice, nLeds, nBuffers=1):
-        self.f = open(spiDevice, "w")
+        self.spi = open(spiDevice, "w")
         self.nLeds = nLeds
         self.nBuffers = nBuffers
         self.buffers = []
@@ -62,18 +62,6 @@ class LedStrip_WS2801_FileBased:
                 ba.extend([0, 0, 0])
             self.buffers.append(ba)
 
-    def close(self):
-        if (self.f != None):
-            self.f.close()
-            self.f = None
-
     def update(self, bufferNr=0):
-        self.f.write(self.buffers[bufferNr])
-        self.f.flush()
-
-    def setAll(self, color, bufferNr=0):
-        for i in range(0, self.nLeds):
-            self.setPixel(i, color, bufferNr)
-
-    def setPixel(self, index, color, bufferNr=0):
-        self.buffers[bufferNr][index * 3:index * 3 + 3] = (color[0], color[2], color[1])
+        self.spi.write(self.buffers[bufferNr])
+        self.spi.flush()
