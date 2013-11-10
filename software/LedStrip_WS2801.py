@@ -17,8 +17,8 @@
 import spidev
 
 
-# access to SPI with python spidev library
 class LedStrip_WS2801(object):
+    """Access to SPI with python spidev library."""
     # spiDevice has format [
     def __init__(self, nLeds, nBuffers=1):
         self.spi = spidev.SpiDev()  # create spi object
@@ -49,8 +49,8 @@ class LedStrip_WS2801(object):
         self.buffers[bufferNr][index * 3:index * 3 + 3] = (color[0], color[2], color[1])
 
 
-# filebased acces to SPI
 class LedStrip_WS2801_FileBased(LedStrip_WS2801):
+    """Filebased acces to SPI."""
     def __init__(self, nLeds, spiDevice, nBuffers=1):
         self.spi = open(spiDevice, "w")
         self.nLeds = nLeds
