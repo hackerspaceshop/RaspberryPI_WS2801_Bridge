@@ -10,69 +10,70 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # For more information about this project please visit:
 # http://www.hackerspaceshop.com/ledstrips/raspberrypi-ws2801.html
 
 import spidev
 
+
 # access to SPI with python spidev library
-class LedStrip_WS2801:	
-	# spiDevice has format [
-	def __init__(self, nLeds, nBuffers=1):
-		self.spi = spidev.SpiDev() # create spi object
-		self.spi.open(0, 1)
-		self.spi.max_speed_hz = 1000000
-		self.nLeds = nLeds
-		self.nBuffers = nBuffers
-		self.buffers = []
-		for i in range(0, nBuffers):
-			ba = []
-			for l in range(0, nLeds):
-				ba.extend([0,0,0])
-			self.buffers.append(ba)
+class LedStrip_WS2801:
+    # spiDevice has format [
+    def __init__(self, nLeds, nBuffers=1):
+        self.spi = spidev.SpiDev()  # create spi object
+        self.spi.open(0, 1)
+        self.spi.max_speed_hz = 1000000
+        self.nLeds = nLeds
+        self.nBuffers = nBuffers
+        self.buffers = []
+        for i in range(0, nBuffers):
+            ba = []
+            for l in range(0, nLeds):
+                ba.extend([0, 0, 0])
+            self.buffers.append(ba)
 
-	def close(self):
-		if (self.spi != None):
-			self.spi.close()
-			self.spi = None
-	
-	def update(self, bufferNr=0):
-		self.spi.writebytes(self.buffers[bufferNr])
+    def close(self):
+        if (self.spi != None):
+            self.spi.close()
+            self.spi = None
 
-	def setAll(self, color, bufferNr=0):
-		for i in range(0, self.nLeds):
-			self.setPixel(i, color, bufferNr) 
+    def update(self, bufferNr=0):
+        self.spi.writebytes(self.buffers[bufferNr])
 
-	def setPixel(self, index, color, bufferNr=0):
-		self.buffers[bufferNr][index*3:index*3+3] = (color[0], color[2], color[1])
+    def setAll(self, color, bufferNr=0):
+        for i in range(0, self.nLeds):
+            self.setPixel(i, color, bufferNr)
+
+    def setPixel(self, index, color, bufferNr=0):
+        self.buffers[bufferNr][index * 3:index * 3 + 3] = (color[0], color[2], color[1])
+
 
 # filebased acces to SPI
-class LedStrip_WS2801_FileBased:	
-	def __init__(self, spiDevice, nLeds, nBuffers=1):
-		self.f = open(spiDevice, "w")
-		self.nLeds = nLeds
-		self.nBuffers = nBuffers
-		self.buffers = []
-		for i in range(0, nBuffers):
-			ba = bytearray()
-			for l in range(0, nLeds):
-				ba.extend([0,0,0])
-			self.buffers.append(ba)
+class LedStrip_WS2801_FileBased:
+    def __init__(self, spiDevice, nLeds, nBuffers=1):
+        self.f = open(spiDevice, "w")
+        self.nLeds = nLeds
+        self.nBuffers = nBuffers
+        self.buffers = []
+        for i in range(0, nBuffers):
+            ba = bytearray()
+            for l in range(0, nLeds):
+                ba.extend([0, 0, 0])
+            self.buffers.append(ba)
 
-	def close(self):
-		if (self.f != None):
-			self.f.close()
-			self.f = None
-	
-	def update(self, bufferNr=0):
-		self.f.write(self.buffers[bufferNr])
-		self.f.flush()
+    def close(self):
+        if (self.f != None):
+            self.f.close()
+            self.f = None
 
-	def setAll(self, color, bufferNr=0):
-		for i in range(0, self.nLeds):
-			self.setPixel(i, color, bufferNr) 
+    def update(self, bufferNr=0):
+        self.f.write(self.buffers[bufferNr])
+        self.f.flush()
 
-	def setPixel(self, index, color, bufferNr=0):
-		self.buffers[bufferNr][index*3:index*3+3] = (color[0], color[2], color[1])
+    def setAll(self, color, bufferNr=0):
+        for i in range(0, self.nLeds):
+            self.setPixel(i, color, bufferNr)
 
+    def setPixel(self, index, color, bufferNr=0):
+        self.buffers[bufferNr][index * 3:index * 3 + 3] = (color[0], color[2], color[1])
