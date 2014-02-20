@@ -61,6 +61,33 @@ def antialisedPoint(ledStrip, color, step, dscale, sleep=0):
         #   time.sleep(sleep)
 
 
+def knight_rider(ledStrip, trail_nb_leds=3, color=[255, 0, 0], times=5, sleep=0.08):
+    if trail_nb_leds > ledStrip.nLeds or trail_nb_leds <= 0:
+        raise ValueError("Wrong trail_nb_leds value")
+    black_color = [0, 0, 0]
+
+    for i in range(times):
+        # left to right
+        for i in range(ledStrip.nLeds + trail_nb_leds):
+            ledStrip.setAll(black_color)
+            for j in range(min(i + 1, trail_nb_leds)):
+                if i - j <= ledStrip.nLeds:
+                    ledStrip.setPixel(index=i - j, color=[x / max((j * 8), 1) for x in color]) #  division is to fake lower brightness
+            ledStrip.update()
+            time.sleep(sleep)
+
+        # right to left
+        for i in reversed(range(-trail_nb_leds, ledStrip.nLeds)):
+            ledStrip.setAll(black_color)
+            for j in range(min(ledStrip.nLeds - i + 1, trail_nb_leds)):
+                if i + j >= 0:
+                    ledStrip.setPixel(index=i + j, color=[x / max((j * 8), 1) for x in color]) #  division is to fake lower brightness
+            ledStrip.update()
+            time.sleep(sleep)
+
+        time.sleep(0.7)
+
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         nrOfleds = 160
@@ -84,3 +111,4 @@ if __name__ == '__main__':
         antialisedPoint(ledStrip, [0, 255, 0], 0.5, 0.3)
         antialisedPoint(ledStrip, [0, 0, 255], 0.5, 0.3)
         rainbowAll(ledStrip, 500, 0.01)
+        knight_rider(ledStrip)
